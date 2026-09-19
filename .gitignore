@@ -1,0 +1,6 @@
+.venv/
+data/
+data.zip
+pointer.txt
+.DS_Store
+__pycache__/
