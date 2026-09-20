@@ -1,4 +1,5 @@
 import requests 
+import zipfile
 def fetch_pointer():
     try:
         response=requests.get('http://data.gdeltproject.org/gdeltv2/lastupdate.txt',timeout=10)
@@ -14,4 +15,20 @@ def fetch_pointer():
     except Exception as e:
         print("Failed to fetch data",e)
         return None 
-print(fetch_pointer())
+def download_and_extract(url):
+    try:
+        response=requests.get(url,timeout=10)
+        if response.status_code==200:
+            with open('data.zip','wb') as f:
+                f.write(response.content)
+            with zipfile.ZipFile('data.zip','r') as zip_ref:
+                zip_ref.extractall('data')
+            return 'data/'+zip_ref.namelist()[0]
+        else:
+            print('Failed to download file,status code:',response.status_code)
+            return None
+    except Exception as e:
+        print("Failed to download and extract data:",e)
+        return None 
+url=fetch_pointer()
+print(download_and_extract(url))
