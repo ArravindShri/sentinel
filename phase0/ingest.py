@@ -4,6 +4,9 @@ def main():
     url = fetch_pointer()
     csv_path = download_and_extract(url)
     rows = parse_events(csv_path)
+    with open('data/load.tsv','w') as f:
+        for row in rows:
+            f.write('\t'.join(row)+'\n')
     dates = []                     
     for row in rows:
         dates.append(row[2])        
